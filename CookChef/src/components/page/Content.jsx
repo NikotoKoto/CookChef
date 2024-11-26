@@ -1,15 +1,18 @@
 import styled from "styled-components";
 import { theme } from "../../theme/index";
+import Recipe from "./Recipe";
 export default function Content() {
   return (
     <ContentStyled>
       <h1 className="titleContent">Découvres nos nouvelles recettes</h1>
       <div className="cards-Container">
-        <div className="cards">element</div>
-        <div className="cards">element</div>
-        <div className="cards">element</div>
-        <div className="cards">element</div>
-        <div className="cards">element</div>
+        <Recipe/>
+        <Recipe/>
+        <Recipe/>
+        <Recipe/>
+        <Recipe/>
+        <Recipe/>
+        <Recipe/>
  
       </div>
     </ContentStyled>
@@ -42,9 +45,5 @@ const ContentStyled = styled.div`
     background: white;
     padding: 20px;
   }
-  .cards{
-    border: 1px solid black;
-    height: 500px;
-
-  }
+  
 `;
