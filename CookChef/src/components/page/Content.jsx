@@ -1,18 +1,20 @@
 import styled from "styled-components";
-import { theme } from "../../theme/index";
 import Recipe from "./Recipe";
+import {data} from "./data"
 export default function Content() {
   return (
     <ContentStyled>
       <h1 className="titleContent">Découvres nos nouvelles recettes</h1>
       <div className="cards-Container">
-        <Recipe/>
-        <Recipe/>
-        <Recipe/>
-        <Recipe/>
-        <Recipe/>
-        <Recipe/>
-        <Recipe/>
+        {
+          data.map(datas => (
+            <Recipe
+            key={datas.id}
+            title={datas.title}
+            image={datas.imageSource} />
+          ))
+        }
+       
  
       </div>
     </ContentStyled>
