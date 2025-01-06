@@ -1,31 +1,28 @@
-import potAuFeu from "../../assets/images/recipe-pot-au-feu.jpg"
-import couscous from "../../assets/images/recipe-couscous.jpg"
-import hotdog from "../../assets/images/hotdog.jpg"
-import hamburger from "../../assets/images/hamburger.jpg"
+
 export const data =[
     {
         id : "1",
         title : "Pot au feu",
-        imageSource: potAuFeu,
+        imageSource: "assets/images/recipe-pot-au-feu.jpg",
 
     },
     {
         id : "2",
         title: " Couscous",
-        imageSource: couscous,
+        imageSource: "assets/images/recipe-couscous.jpg",
 
     }
     ,
     {
         id : "3",
         title: "Hot Dog",
-        imageSource: hotdog,
+        imageSource: "assets/images/hotdog.jpg",
 
     },
     {
         id : "4",
         title: "Hamburger",
-        imageSource: hamburger,
+        imageSource: "assets/images/hamburger.jpg",
     }
 
 ]

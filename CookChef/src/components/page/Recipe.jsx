@@ -1,13 +1,23 @@
 import styled from "styled-components";
 import { theme } from "../../theme";
+import { useState } from "react";
 export default function Recipe({ image, title }) {
+
+  //state 
+const [liked, setLiked] = useState(false)
+  //comportement 
+const handleClick = () => {
+setLiked(!liked)
+}
+  //render
   return (
-    <RecipeStyled>
+    <RecipeStyled onClick={ handleClick}>
       <div className="imgContainer">
         <img src={image} alt="recipe" />
       </div>
       <div className="recipeTitle">
-        <h3>{title}</h3>
+        <h3 className="titleRecipe">{title}</h3>
+        <i className={`${liked ? "text-primary" : ""} fa-regular fa-heart `}></i>
       </div>
     </RecipeStyled>
   );
@@ -17,6 +27,10 @@ const RecipeStyled = styled.div`
   border-radius: 20px;
   height: 400px;
 
+  i{
+        font-size: 20px;
+      }
+
   &:hover {
     img {
       transform: scale(1.1);
@@ -25,6 +39,8 @@ const RecipeStyled = styled.div`
 
     .recipeTitle {
       color: ${theme.colors.primary};
+
+      
     }
   }
 
@@ -42,11 +58,12 @@ const RecipeStyled = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: 0.2s transform;
+    transition: 2s transform;
   }
 
   .recipeTitle {
     display: flex;
+    flex-direction: column;
     height: 100px;
     justify-content: center;
     align-items: center;
@@ -55,5 +72,13 @@ const RecipeStyled = styled.div`
     border-bottom: 1px solid ${theme.colors.greyLight};
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+  }
+  .titleRecipe{
+    margin-bottom: 10px;
+  }
+
+  .text-primary{
+    color: red;
+   
   }
 `;
