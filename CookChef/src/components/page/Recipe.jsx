@@ -1,13 +1,34 @@
 import styled from "styled-components";
 import { theme } from "../../theme";
-import { useState } from "react";
-export default function Recipe({ image, title }) {
+import { useContext } from "react";
+import { ApiContext } from "../../context/ApiContext";
+export default function Recipe({ recipe: {
+  _id, image, title, liked }, toggleLikedRecipes}) {
 
   //state 
-const [liked, setLiked] = useState(false)
+const BASE_URL_API = useContext(ApiContext)
+
+
   //comportement 
-const handleClick = () => {
-setLiked(!liked)
+const handleClick = async() => {
+try{
+  const response = fetch(`${BASE_URL_API}/${_id}`, {
+    method: 'PATCH',
+    headers : {
+      'Content-Type' : 'application/json'
+    },
+    body: JSON.stringify({
+      liked : !liked
+    })
+  });
+  if(response.ok){
+    const updatedRecipe = await response.json();
+    toggleLikedRecipes(updatedRecipe)
+    console.log(liked)
+  }
+}catch(e){
+console.log('error',e)
+}
 }
   //render
   return (
@@ -17,7 +38,7 @@ setLiked(!liked)
       </div>
       <div className="recipeTitle">
         <h3 className="titleRecipe">{title}</h3>
-        <i className={`${liked ? "text-primary" : ""} fa-regular fa-heart `}></i>
+        <i className={` fa-regular fa-heart ${liked ? "text-primary" : ""}`}></i>
       </div>
     </RecipeStyled>
   );
@@ -32,9 +53,10 @@ const RecipeStyled = styled.div`
       }
 
   &:hover {
+    cursor: pointer;
     img {
       transform: scale(1.1);
-      cursor: pointer;
+      
     }
 
     .recipeTitle {
