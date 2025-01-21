@@ -1,17 +1,45 @@
 import styled from "styled-components";
 import Recipe from "./Recipe";
-import { data } from "./data";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import media from "../../assets/styled/media";
 import { theme } from "../../theme";
+import Loading from "../layout/loading/Loading";
+import { useContext } from "react";
+import { ApiContext } from "../../context/ApiContext";
+
+
 export default function Content() {
   //state
   const [filter, setFilter] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [recipes, setRecipes] = useState([])
+  const BASE_URL_API = useContext(ApiContext)
+  
+  useEffect(() => {
+    let cancel = false;
+    const fetchRecipes = async () => {
+      try{
+        setIsLoading(true)
+        const response = await fetch(BASE_URL_API);
+        if(response.ok && !cancel){
+          const recipes = await response.json();
+          setRecipes(Array.isArray(recipes) ? recipes : [recipes])
+        }
+      }catch(e){
+        console.log('Erreur', e)
+      }finally{
+        setIsLoading(false)
+      }
+    }
+    fetchRecipes();
+    return () => (cancel = true)
+  },[])
+  
   //Comportement
   const handleInput = (e) => {
     const filterValue = e.target.value;
     setFilter(filterValue.trim().toLowerCase());
-  }
+  };
   //render
   return (
     <ContentStyled>
@@ -22,15 +50,23 @@ export default function Content() {
         <input onInput={handleInput} placeholder="Rechercher" />
       </div>
 
-      <div className="cards-Container">
-        {data.filter(datas => datas.title.toLowerCase().startsWith(filter)).map((datas) => (
-          <Recipe
-            key={datas.id}
-            title={datas.title}
-            image={datas.imageSource}
-          />
-        ))}
-      </div>
+      
+        {isLoading ?
+            <Loading/>
+          : <div className="cards-Container">
+          {recipes
+            .filter((r) => r.title.toLowerCase().startsWith(filter))
+            .map((r) => (
+              <Recipe
+                key={r.id}
+                title={r.title}
+                image={r.image}
+              />
+            ))}
+            </div>
+        }
+        
+      
     </ContentStyled>
   );
 }
@@ -95,7 +131,6 @@ ${media.xs(`
       border: 0;
       font-family: ${theme.fonts.family.normal};
       width: 100%;
-    
     }
 
     ::placeholder {
@@ -105,4 +140,5 @@ ${media.xs(`
   .iconSearch {
     font-size: 15px;
   }
+
 `;
