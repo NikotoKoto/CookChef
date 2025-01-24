@@ -10,9 +10,9 @@ import { ApiContext } from "../../context/ApiContext";
 export default function Content() {
   //state
   const [filter, setFilter] = useState(""); // add feature to filter more items
-  const [isLoading, setIsLoading] = useState(true);// add loading features
-  const [recipes, setRecipes] = useState([]);// data
-  const [page, setPage] = useState(1)// add feature to render more products
+  const [isLoading, setIsLoading] = useState(true); // add loading features
+  const [recipes, setRecipes] = useState([]); // data
+  const [page, setPage] = useState(1); // add feature to render more products
   const BASE_URL_API = useContext(ApiContext);
 
   useEffect(() => {
@@ -20,23 +20,30 @@ export default function Content() {
     const fetchRecipes = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`${BASE_URL_API}?skip=${(page - 1) * 18}&limit=18`);
+        const response = await fetch(
+          `${BASE_URL_API}?skip=${(page - 1) * 18}&limit=18`
+        );
         if (response.ok && !cancel) {
           const newRecipes = await response.json();
-          setRecipes((x) => Array.isArray(newRecipes) ? [...x, ...newRecipes]: [...x,newRecipes]);
+          console.log("API Response:", newRecipes);
+          setRecipes((x) =>
+            Array.isArray(newRecipes)
+              ? [...x, ...newRecipes]
+              : [...x, newRecipes]
+          );
+          
         }
       } catch (e) {
         console.log("Erreur", e);
       } finally {
-        if(!cancel){
+        if (!cancel) {
           setIsLoading(false);
         }
-        
       }
     };
     fetchRecipes();
     return () => (cancel = true);
-  }, [BASE_URL_API,page]);
+  }, [BASE_URL_API, page]);
 
   const updateRecipe = (updatedRecipe) => {
     setRecipes(
@@ -50,12 +57,22 @@ export default function Content() {
   };
 
   const handleClickLoadMoreReceipes = () => {
-    setPage(page + 1)
-  }
+    setPage(page + 1);
+  };
+
+
+
+
+  
+
+
   //render
   return (
     <ContentStyled>
-      <h1 className="titleContent">Découvres nos nouvelles recettes <small className="small-recipes">-{recipes.length}</small></h1>
+      <h1 className="titleContent">
+        Découvres nos nouvelles recettes{" "}
+        <small className="small-recipes">-{recipes.length}</small>
+      </h1>
 
       <div className="container">
         <div className="searchBar">
@@ -79,7 +96,9 @@ export default function Content() {
           </div>
         )}
         <div className="moreRecipes">
-          <button className="btn-more" onClick={handleClickLoadMoreReceipes}>Charger plus de recette</button>
+          <button className="btn-more" onClick={handleClickLoadMoreReceipes}>
+            Charger plus de recette
+          </button>
         </div>
       </div>
     </ContentStyled>
@@ -95,21 +114,19 @@ const ContentStyled = styled.div`
   margin: auto;
   padding: 20px;
   background-color: ${theme.colors.greyLight};
-  
+
   .container {
     display: flex;
     padding: 10px 15px;
     margin: 30px 0 30px 0;
     gap: 5px;
     flex-direction: column;
-  
+
     align-items: center;
     border: 1px solid ${theme.colors.greyLight};
     border-radius: 20px;
     background-color: ${theme.colors.white};
-  
-    
-  
+
     ::placeholder {
       font-family: ${theme.fonts.family.normal};
     }
@@ -151,12 +168,12 @@ ${media.xs(`
     font-size: 15px;
   }
 
-  .searchBar{
-    display:flex;
-    width:100%;
+  .searchBar {
+    display: flex;
+    width: 100%;
     flex-direction: row;
-    gap:10px;
-    padding:15px;
+    gap: 10px;
+    padding: 15px;
     border: 1px solid ${theme.colors.greyLight};
     border-radius: 20px;
 
@@ -166,33 +183,32 @@ ${media.xs(`
       font-family: ${theme.fonts.family.normal};
       width: 100%;
     }
-}
-
-.moreRecipes {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  }
-.btn-more{
-  padding: 10px;
-  border-radius:20px;
-  border: none;
-  background-color: ${theme.colors.primary};
-  color: ${theme.colors.white};
-  cursor: pointer;
-  transition: background-color 0.5s, color 0.5s, border 0.5s; 
-
-  &:hover{
-    background-color: ${theme.colors.white};
-    color: ${theme.colors.primary};
-    border : 1px solid ${theme.colors.primary};
   }
 
-}
+  .moreRecipes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+  }
+  .btn-more {
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    background-color: ${theme.colors.primary};
+    color: ${theme.colors.white};
+    cursor: pointer;
+    transition: background-color 0.5s, color 0.5s, border 0.5s;
 
-.small-recipes{
-  font-size: 15px;
-  color : ${theme.colors.text};
+    &:hover {
+      background-color: ${theme.colors.white};
+      color: ${theme.colors.primary};
+      border: 1px solid ${theme.colors.primary};
+    }
+  }
+
+  .small-recipes {
+    font-size: 15px;
+    color: ${theme.colors.text};
   }
 `;

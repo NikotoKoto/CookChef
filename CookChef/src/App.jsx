@@ -2,9 +2,9 @@ import styled from "styled-components";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
 import Content from "./components/page/Content";
-// import {SeedRecipes} from "./components/page/Seed";
+ import {SeedRecipes} from "./components/page/Seed";
 
-// SeedRecipes();
+ SeedRecipes();
 
 export default function App() {
  
