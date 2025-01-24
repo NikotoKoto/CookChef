@@ -6,45 +6,17 @@ import { theme } from "../../theme";
 import Loading from "../layout/loading/Loading";
 import { useContext } from "react";
 import { ApiContext } from "../../context/ApiContext";
+import { useFetchData } from "../../hooks/useFetchData";
 
 export default function Content() {
   //state
   const [filter, setFilter] = useState(""); // add feature to filter more items
-  const [isLoading, setIsLoading] = useState(true); // add loading features
-  const [recipes, setRecipes] = useState([]); // data
   const [page, setPage] = useState(1); // add feature to render more products
+  
   const BASE_URL_API = useContext(ApiContext);
 
-  useEffect(() => {
-    let cancel = false;
-    const fetchRecipes = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch(
-          `${BASE_URL_API}?skip=${(page - 1) * 18}&limit=18`
-        );
-        if (response.ok && !cancel) {
-          const newRecipes = await response.json();
-          console.log("API Response:", newRecipes);
-          setRecipes((x) =>
-            Array.isArray(newRecipes)
-              ? [...x, ...newRecipes]
-              : [...x, newRecipes]
-          );
-          
-        }
-      } catch (e) {
-        console.log("Erreur", e);
-      } finally {
-        if (!cancel) {
-          setIsLoading(false);
-        }
-      }
-    };
-    fetchRecipes();
-    return () => (cancel = true);
-  }, [BASE_URL_API, page]);
-
+const {state, isLoading} = useFetchData(BASE_URL_API,page)
+const {data:recipes, setData: setRecipes} = state
   const updateRecipe = (updatedRecipe) => {
     setRecipes(
       recipes.map((r) => (r._id === updatedRecipe._id ? updatedRecipe : r))
