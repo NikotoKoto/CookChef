@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Recipe from "./Recipe";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import media from "../../assets/styled/media";
 import { theme } from "../../theme";
 import Loading from "../layout/loading/Loading";
@@ -33,11 +33,12 @@ const {data:recipes, setData: setRecipes} = state
   };
 
 
+  const deleteRecipe = (_id) => {
 
+    setRecipes((prevRecipes) =>prevRecipes.filter((r) => r._id !== _id))
+  }
 
   
-
-
   //render
   return (
     <ContentStyled>
@@ -63,6 +64,8 @@ const {data:recipes, setData: setRecipes} = state
                   key={r._id}
                   recipe={r}
                   toggleLikedRecipes={updateRecipe}
+                  deleteRecipe={deleteRecipe}
+                 
                 />
               ))}
           </div>
