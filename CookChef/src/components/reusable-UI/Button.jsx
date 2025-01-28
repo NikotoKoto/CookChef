@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import {theme} from "../../theme/index"
-export default function Button({ onClick, className, value }) {
+export default function Button({ children, disabled,type, ...props }) {
   return (
-    <ButtonStyled onClick={onClick} className={className}>
-      {value}
+    <ButtonStyled  disabled={disabled} type={type} {...props}>
+      {children}
     </ButtonStyled>
   );
 }
 
-const ButtonStyled = styled.div`
+const ButtonStyled = styled.button`
 display:flex;
 align-items: center;
 justify-content:center;
