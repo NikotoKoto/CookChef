@@ -15,7 +15,7 @@ export default function Admin() {
 const AdminStyled = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 25px;
+  padding-top: 20px;
   flex-direction: column;
   flex: 1;
   gap: 20px;
