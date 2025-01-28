@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { theme } from "../../../theme";
 
-export default function HeaderMenu() {
+export default function HeaderMenu({setPage}) {
   return (
     <HeaderMenuStyled>
+      <li onClick={() => setPage("admin")}>Ajouter une recette</li>
       <li>Whislist</li>
       <li>Log in</li>
     </HeaderMenuStyled>

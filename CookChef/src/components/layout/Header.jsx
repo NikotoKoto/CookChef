@@ -3,7 +3,11 @@ import styled from "styled-components";
 import { theme } from "../../theme";
 import media from "../../assets/styled/media";
 import HeaderMenu from "./header/HeaderMenu";
-export default function Header() {
+import { IoIosAdd } from "react-icons/io";
+import { IoIosLogIn } from "react-icons/io";
+import { FaHeart } from "react-icons/fa";
+
+export default function Header({ setPage }) {
   //state
   const [showMenu, setShowMenu] = useState(false);
   //comportement
@@ -15,18 +19,29 @@ export default function Header() {
         <img src="/cookchef.png" alt="logo cookchef" />
       </div>
       <ul className="headerList">
-        <button className="btn-reverse-primary">
-          <i className="fa-solid fa-heart cartHeader"></i>WhishList
+        <button className="btn-primary" onClick={() => setPage("admin")}>
+          <IoIosAdd />
+          Ajouter un Produit
         </button>
-        <button className="btn-primary">Connexion</button>
+        <button className="btn-reverse-primary">
+          <FaHeart/>
+          WhishList
+        </button>
+        <button className="btn-primary">
+          <IoIosLogIn />
+          Connexion
+        </button>
       </ul>
       <i
         className="fa-solid fa-bars iconBar"
         onClick={() => setShowMenu(!showMenu)}
       ></i>
-      {showMenu && <>
-        <div className="calc" onClick={()=> setShowMenu(false)}></div>
-        <HeaderMenu /></>}
+      {showMenu && (
+        <>
+          <div className="calc" onClick={() => setShowMenu(false)}></div>
+          <HeaderMenu />
+        </>
+      )}
     </HeaderStyled>
   );
 }
@@ -41,7 +56,6 @@ const HeaderStyled = styled.div`
   box-shadow: ${theme.shadows.nav};
   color: ${theme.colors.primary};
   background-color: ${theme.colors.white};
-
 
   .iconBar {
     margin-right: 15px;
@@ -66,6 +80,10 @@ const HeaderStyled = styled.div`
     }
   }
   .btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
     padding: 8px 15px;
     margin-right: 15px;
     border-radius: 20px;
@@ -84,6 +102,10 @@ const HeaderStyled = styled.div`
   }
 
   .btn-reverse-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
     padding: 8px 15px;
     margin-right: 15px;
     border-radius: 20px;
@@ -100,20 +122,22 @@ const HeaderStyled = styled.div`
       color: white;
     }
   }
-  .cartHeader {
-    margin-right: 5px;
-  }
+  
 
   .headerList {
+    display:flex;
+    align-items :center;
+    justify-content:center;
+
     ${media.sm(`
     display: none; `)}
   }
 
-  .calc{
+  .calc {
     position: fixed;
     top: 0;
-    left:0;
-    width:100%;
+    left: 0;
+    width: 100%;
     height: 100vh;
   }
 `;
