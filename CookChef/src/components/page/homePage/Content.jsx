@@ -1,22 +1,23 @@
 import styled from "styled-components";
 import Recipe from "./Recipe";
-import {  useState } from "react";
-import media from "../../assets/styled/media";
-import { theme } from "../../theme";
-import Loading from "../layout/loading/Loading";
+import { useState } from "react";
+import media from "../../../assets/styled/media";
+import { theme } from "../../../theme";
+import Loading from "../../layout/loading/Loading";
 import { useContext } from "react";
-import { ApiContext } from "../../context/ApiContext";
-import { useFetchData } from "../../hooks/useFetchData";
+import { ApiContext } from "../../../context/ApiContext";
+import { useFetchData } from "../../../hooks/useFetchData";
+import Input from "../../reusable-UI/Input";
 
 export default function Content() {
   //state
   const [filter, setFilter] = useState(""); // add feature to filter more items
   const [page, setPage] = useState(1); // add feature to render more products
-  
+
   const BASE_URL_API = useContext(ApiContext);
 
-const {state, isLoading} = useFetchData(BASE_URL_API,page)
-const {data:recipes, setData: setRecipes} = state
+  const { state, isLoading } = useFetchData(BASE_URL_API, page);
+  const { data: recipes, setData: setRecipes } = state;
   const updateRecipe = (updatedRecipe) => {
     setRecipes(
       recipes.map((r) => (r._id === updatedRecipe._id ? updatedRecipe : r))
@@ -32,13 +33,10 @@ const {data:recipes, setData: setRecipes} = state
     setPage(page + 1);
   };
 
-
   const deleteRecipe = (_id) => {
+    setRecipes((prevRecipes) => prevRecipes.filter((r) => r._id !== _id));
+  };
 
-    setRecipes((prevRecipes) =>prevRecipes.filter((r) => r._id !== _id))
-  }
-
-  
   //render
   return (
     <ContentStyled>
@@ -50,8 +48,8 @@ const {data:recipes, setData: setRecipes} = state
       <div className="container">
         <div className="searchBar">
           <i className="fa-solid fa-magnifying-glass iconSearch"></i>
-          <input onInput={handleInput} placeholder="Rechercher" />
-        </div>
+          <Input onInput={handleInput} placeholder="Rechercher"/>
+                  </div>
 
         {isLoading && !recipes.length ? (
           <Loading />
@@ -65,7 +63,6 @@ const {data:recipes, setData: setRecipes} = state
                   recipe={r}
                   toggleLikedRecipes={updateRecipe}
                   deleteRecipe={deleteRecipe}
-                 
                 />
               ))}
           </div>

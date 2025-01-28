@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
-import { theme } from "../../theme";
+import { theme } from "../../../theme";
 import { useContext } from "react";
-import { ApiContext } from "../../context/ApiContext";
+import { ApiContext } from "../../../context/ApiContext";
 import { ImCross } from "react-icons/im";
 export default function Recipe({
   recipe: { _id, image, title, liked },
@@ -108,8 +108,6 @@ const RecipeStyled = styled.div`
     border-bottom: 1px solid ${theme.colors.greyLight};
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
-
-    
   }
   .titleRecipe {
     margin-bottom: 10px;

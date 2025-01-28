@@ -15,7 +15,7 @@ export default function Header({ setPage }) {
   //render
   return (
     <HeaderStyled>
-      <div className="containerHeader">
+      <div className="containerHeader" onClick={() => setPage('homePage')}>
         <img src="/cookchef.png" alt="logo cookchef" />
       </div>
       <ul className="headerList">
@@ -39,7 +39,7 @@ export default function Header({ setPage }) {
       {showMenu && (
         <>
           <div className="calc" onClick={() => setShowMenu(false)}></div>
-          <HeaderMenu />
+          <HeaderMenu setPage={setPage}/>
         </>
       )}
     </HeaderStyled>
@@ -74,6 +74,7 @@ const HeaderStyled = styled.div`
 
   .containerHeader {
     flex: 1 1 auto;
+    cursor: pointer;
 
     img {
       width: 150px;
