@@ -1,58 +1,32 @@
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
 import { theme } from "../../../theme";
-import { useContext } from "react";
-import { ApiContext } from "../../../context/ApiContext";
 import { ImCross } from "react-icons/im";
 export default function Recipe({
-  recipe: { _id, image, title, liked },
-  toggleLikedRecipes,
+  recipe,
+  updateRecipe,
   deleteRecipe,
 }) {
   //state
-  const BASE_URL_API = useContext(ApiContext);
+
 
   //comportement
-  const handleClickLike = async () => {
-    try {
-      const response = fetch(`${BASE_URL_API}/${_id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          liked: !liked,
-        }),
-      });
-      if (response.ok) {
-        const updatedRecipe = await response.json();
-        toggleLikedRecipes(updatedRecipe);
-        console.log(liked);
-      }
-    } catch (e) {
-      console.log("error", e);
-    }
-  };
+  const handleClickLike = () => {
+    updateRecipe ({
+      ...recipe,
+      liked: !recipe.liked
+    })
+  }
 
   const handleClickDelete = async (e) => {
     e.stopPropagation();
-    try {
-      const response = await fetch(`${BASE_URL_API}/${_id}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        deleteRecipe(_id);
-      }
-    } catch {
-      console.log("error", e);
-    }
-  };
-
+    deleteRecipe(recipe._id)
+  }
   //render
   return (
     <RecipeStyled onClick={handleClickLike}>
       <div className="imgContainer">
-        <img src={image} alt="recipe" />
+        <img src={recipe.image} alt="recipe" />
       </div>
       <div
         className="deleteCross"
@@ -63,9 +37,9 @@ export default function Recipe({
         <ImCross />
       </div>
       <div className="recipeTitle">
-        <h3 className="titleRecipe">{title}</h3>
+        <h3 className="titleRecipe">{recipe.title}</h3>
         <i
-          className={` fa-regular fa-heart ${liked ? "text-primary" : ""}`}
+          className={` fa-regular fa-heart ${recipe.liked ? "text-primary" : ""}`}
         ></i>
       </div>
     </RecipeStyled>

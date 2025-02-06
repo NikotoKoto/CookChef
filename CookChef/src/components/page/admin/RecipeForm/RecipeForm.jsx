@@ -8,8 +8,8 @@ import * as yup from "yup";
 import { ApiContext } from "../../../../context/ApiContext";
 import { useContext } from "react";
 import Input from "../../../reusable-UI/Input";
-export default function RecipeForm() {
 
+export default function RecipeForm() {
   const BASE_URL_API = useContext(ApiContext);
   const defaultValues = {
     title: "",
@@ -38,33 +38,34 @@ export default function RecipeForm() {
   } = useForm({
     defaultValues,
     resolver: yupResolver(recipeSchema),
-    mode: "onChange"
-   
   });
 
   const submit = async (values) => {
-
-    try{
+    try {
       clearErrors();
-      const response = await fetch(BASE_URL_API,
-        {
-          method: "POST",
-          headers: {
-            'Content-type' : 'application/json'
-          },
-          body: JSON.stringify(values)
-        }
-      )
-      if(response.ok) {
-        reset(defaultValues)
-      }else{
-        setError('genereic', {type: 'generic', message: 'il y a eu une erreur'})
+      const response = await fetch(BASE_URL_API, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      if (response.ok) {
+        reset(defaultValues);
+      } else {
+        setError("genereic", {
+          type: "generic",
+          message: "il y a eu une erreur",
+        });
       }
-    }catch(e){
-      setError('genereic', {type: 'generic', message: 'il y a eu une erreur'})
+    } catch (e) {
+      setError("genereic", {
+        type: "generic",
+        message: "il y a eu une erreur",
+      });
     }
   };
- 
+
   return (
     <RecipeFormStyled>
       <form className="contentForm" onSubmit={handleSubmit(submit)}>
@@ -89,7 +90,9 @@ export default function RecipeForm() {
         </div>
         {errors.image && <p className="formError">{errors.image.message}</p>}
 
-        {errors.generic && <p className="formError">{errors.generic.message}</p>}
+        {errors.generic && (
+          <p className="formError">{errors.generic.message}</p>
+        )}
         <Button disabled={isSubmitting} type="submit">
           <span>Sauvegarder</span>
         </Button>

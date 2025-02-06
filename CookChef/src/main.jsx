@@ -8,11 +8,10 @@ import { router } from './router'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router = {router}> 
-      {/* Need routerProvider with router */}
     <ApiContext.Provider value="https://restapi.fr/api/recipes">
-    <App  />
+    <RouterProvider router = {router} /> 
+      {/* Need routerProvider with router */}
+
     </ApiContext.Provider>
-    </RouterProvider>
   </StrictMode>,
 )

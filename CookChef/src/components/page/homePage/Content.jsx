@@ -15,13 +15,31 @@ export default function Content() {
   const [page, setPage] = useState(1); // add feature to render more products
 
   const BASE_URL_API = useContext(ApiContext);
+  console.log("BASE_URL_API:", BASE_URL_API);
 
   const { state, isLoading } = useFetchData(BASE_URL_API, page);
   const { data: recipes, setData: setRecipes } = state;
-  const updateRecipe = (updatedRecipe) => {
-    setRecipes(
-      recipes.map((r) => (r._id === updatedRecipe._id ? updatedRecipe : r))
-    );
+
+  const updateRecipe = async(updatedRecipe) => {
+    try {
+      const {_id, ...restRecipe} = updatedRecipe;
+      const response = await fetch(`${BASE_URL_API}/${updatedRecipe._id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(restRecipe)})
+      if (response.ok) {
+        const updatedRecipe = await response.json();
+        setRecipes(
+          recipes.map((r) => (r._id === updatedRecipe._id ? updatedRecipe : r))
+        );
+       
+      }
+    } catch (e) {
+      console.log("error", e);
+    }
+  
   };
   //Comportement
   const handleInput = (e) => {
@@ -33,9 +51,20 @@ export default function Content() {
     setPage(page + 1);
   };
 
-  const deleteRecipe = (_id) => {
-    setRecipes((prevRecipes) => prevRecipes.filter((r) => r._id !== _id));
+  const deleteRecipe = async(_id) => {
+    try{
+      const response = await fetch(`${BASE_URL_API}/${_id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        setRecipes((prevRecipes) => prevRecipes.filter((r) => r._id !== _id));
+      }
+    } catch {
+      console.log("error", e);
+    }
+    
   };
+
 
   //render
   return (
@@ -61,7 +90,7 @@ export default function Content() {
                 <Recipe
                   key={r._id}
                   recipe={r}
-                  toggleLikedRecipes={updateRecipe}
+                  updateRecipe={updateRecipe}
                   deleteRecipe={deleteRecipe}
                 />
               ))}

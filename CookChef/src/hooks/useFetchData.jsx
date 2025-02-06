@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 
-// Fonction qui permet d'utiliser la data de facon global 
+// Fonction qui permet d'utiliser la data de facon global
 export function useFetchData(url, page) {
   const [data, setData] = useState([]); // data
   const [isLoading, setIsLoading] = useState(true); // add loading features
   const [error, setError] = useState([]);
+
   useEffect(() => {
     let cancel = false;
     const fetchData = async () => {
@@ -14,15 +15,15 @@ export function useFetchData(url, page) {
         const queryParam = new URLSearchParams();
         if (page) {
           // Permet de manipuler l'url
-          queryParam.append("skip", (page - 1) * 18);
           queryParam.append("limit", 18);
-          queryParam.append('sort','createdAt:-1')
+          queryParam.append("skip", (page - 1) * 18);
+          queryParam.append("sort", "createdAt:-1");
         }
 
         const response = await fetch(url + `?${queryParam}`);
         if (response.ok && !cancel) {
           const newData = await response.json();
-         
+
           setData((x) =>
             Array.isArray(newData) ? [...x, ...newData] : [...x, newData]
           );

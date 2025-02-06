@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import RecipeForm from "../components/RecipeForm/RecipeForm";
+import RecipeForm from "./RecipeForm/RecipeForm";
 import { theme } from "../../../theme";
 
 export default function Admin() {
