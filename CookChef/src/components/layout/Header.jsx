@@ -6,8 +6,9 @@ import HeaderMenu from "./header/HeaderMenu";
 import { IoIosAdd } from "react-icons/io";
 import { IoIosLogIn } from "react-icons/io";
 import { FaHeart } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
-export default function Header({ setPage }) {
+export default function Header() {
   //state
   const [showMenu, setShowMenu] = useState(false);
   //comportement
@@ -15,16 +16,20 @@ export default function Header({ setPage }) {
   //render
   return (
     <HeaderStyled>
-      <div className="containerHeader" onClick={() => setPage('homePage')}>
+      <NavLink className="containerHeader" to="/">
         <img src="/cookchef.png" alt="logo cookchef" />
-      </div>
+      </NavLink>
+
       <ul className="headerList">
-        <button className="btn-primary" onClick={() => setPage("admin")}>
-          <IoIosAdd />
-          Ajouter un Produit
-        </button>
+        <NavLink to="/admin" className="no-underline">
+          <button className="btn-primary">
+            <IoIosAdd />
+            <span>Ajouter un Produit </span>
+          </button>
+        </NavLink>
+
         <button className="btn-reverse-primary">
-          <FaHeart/>
+          <FaHeart />
           WhishList
         </button>
         <button className="btn-primary">
@@ -39,7 +44,7 @@ export default function Header({ setPage }) {
       {showMenu && (
         <>
           <div className="calc" onClick={() => setShowMenu(false)}></div>
-          <HeaderMenu setPage={setPage}/>
+          <HeaderMenu />
         </>
       )}
     </HeaderStyled>
@@ -80,6 +85,8 @@ const HeaderStyled = styled.div`
       width: 150px;
     }
   }
+
+ 
   .btn-primary {
     display: flex;
     align-items: center;
@@ -93,6 +100,9 @@ const HeaderStyled = styled.div`
     color: white;
     cursor: pointer;
     transition: 0.2s opacity;
+
+    
+    
 
     &:hover {
       background: white;
@@ -123,12 +133,11 @@ const HeaderStyled = styled.div`
       color: white;
     }
   }
-  
 
   .headerList {
-    display:flex;
-    align-items :center;
-    justify-content:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     ${media.sm(`
     display: none; `)}
@@ -140,5 +149,12 @@ const HeaderStyled = styled.div`
     left: 0;
     width: 100%;
     height: 100vh;
+  }
+  .no-underline{
+    text-decoration:none;
+
+    &:hover{
+      text-decoration:none;
+    }
   }
 `;
