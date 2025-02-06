@@ -4,10 +4,10 @@ import Header from "./components/layout/Header";
 import Admin from "./components/page/admin/Admin"
 import Content from "./components/page/homePage/Content";
 import { useState } from "react";
-//  import {SeedRecipes} from "./components/page/Seed";
+import {SeedRecipes} from "./components/page/homePage/Seed";
 
 
- //SeedRecipes();
+SeedRecipes();
 
 export default function App() {
 // state
