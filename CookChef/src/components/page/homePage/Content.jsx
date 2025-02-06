@@ -4,9 +4,8 @@ import { useState } from "react";
 import media from "../../../assets/styled/media";
 import { theme } from "../../../theme";
 import Loading from "../../layout/loading/Loading";
-import { useContext } from "react";
-import { ApiContext } from "../../../context/ApiContext";
-import { useFetchData } from "../../../hooks/useFetchData";
+import {updateRecipe as updateR, deleteRecipe as deleteR} from "../../../apis"
+import {  useFetchRecipes } from "../../../hooks/useFetchRecipe";
 import Input from "../../reusable-UI/Input";
 
 export default function Content() {
@@ -14,31 +13,15 @@ export default function Content() {
   const [filter, setFilter] = useState(""); // add feature to filter more items
   const [page, setPage] = useState(1); // add feature to render more products
 
-  const BASE_URL_API = useContext(ApiContext);
-  console.log("BASE_URL_API:", BASE_URL_API);
 
-  const { state, isLoading } = useFetchData(BASE_URL_API, page);
-  const { data: recipes, setData: setRecipes } = state;
+  const { state, isLoading } = useFetchRecipes(page);
+  const { recipe: recipes, setRecipe: setRecipes } = state;
 
   const updateRecipe = async(updatedRecipe) => {
-    try {
-      const {_id, ...restRecipe} = updatedRecipe;
-      const response = await fetch(`${BASE_URL_API}/${updatedRecipe._id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(restRecipe)})
-      if (response.ok) {
-        const updatedRecipe = await response.json();
-        setRecipes(
-          recipes.map((r) => (r._id === updatedRecipe._id ? updatedRecipe : r))
-        );
-       
-      }
-    } catch (e) {
-      console.log("error", e);
-    }
+    const savedRecipe = await updateR(updatedRecipe)
+    setRecipes(
+      recipes.map((r) => (r._id === savedRecipe._id ? savedRecipe : r))
+    );
   
   };
   //Comportement
@@ -52,17 +35,8 @@ export default function Content() {
   };
 
   const deleteRecipe = async(_id) => {
-    try{
-      const response = await fetch(`${BASE_URL_API}/${_id}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        setRecipes((prevRecipes) => prevRecipes.filter((r) => r._id !== _id));
-      }
-    } catch {
-      console.log("error", e);
-    }
-    
+   const deleteRecipeID=  await deleteR(_id)
+    setRecipes((prevRecipes) => prevRecipes.filter((r) => r._id !==deleteRecipeID));
   };
 
 
