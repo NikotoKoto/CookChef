@@ -1,15 +1,14 @@
-import React from "react";
 import styled from "styled-components";
-import Button from "../../../reusable-UI/Button";
-import { theme } from "../../../../theme";
+import Button from "../../../../../../reusable-UI/Button";
+import { theme } from "../../../../../../../theme";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { ApiContext } from "../../../../context/ApiContext";
+import { ApiContext } from "../../../../../../../context/ApiContext";
 import { useContext } from "react";
-import Input from "../../../reusable-UI/Input";
+import Input from "../../../../../../reusable-UI/Input";
 
-export default function RecipeForm() {
+export default function AdminRecipeForm() {
   const BASE_URL_API = useContext(ApiContext);
   const defaultValues = {
     title: "",
@@ -67,7 +66,7 @@ export default function RecipeForm() {
   };
 
   return (
-    <RecipeFormStyled>
+    <AdminRecipeFormStyled>
       <form className="contentForm" onSubmit={handleSubmit(submit)}>
         <div className="labelDiv">
           <label htmlFor="titleOfRecipe">Titre de la recette</label>
@@ -97,10 +96,10 @@ export default function RecipeForm() {
           <span>Sauvegarder</span>
         </Button>
       </form>
-    </RecipeFormStyled>
+    </AdminRecipeFormStyled>
   );
 }
-const RecipeFormStyled = styled.div`
+const AdminRecipeFormStyled = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${theme.colors.white};

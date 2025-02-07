@@ -1,13 +1,17 @@
 import styled from "styled-components";
-import RecipeForm from "./RecipeForm/RecipeForm";
 import { theme } from "../../../theme";
+import { Outlet } from "react-router-dom";
+import AdminNav from "./AdminNav/AdminNav";
+import { Suspense } from "react";
 
 export default function Admin() {
   return (
     <AdminStyled>
       <h1>Welcome to your Panel Admin</h1>
-      <h3> What do you need to add ?</h3>
-      <RecipeForm />
+      <AdminNav />
+      <Suspense>
+        <Outlet />
+      </Suspense>
     </AdminStyled>
   );
 }
@@ -20,5 +24,4 @@ const AdminStyled = styled.div`
   flex: 1;
   gap: 20px;
   background-color: ${theme.colors.greyLight};
-
 `;

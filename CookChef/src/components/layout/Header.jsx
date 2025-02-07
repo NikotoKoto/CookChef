@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { theme } from "../../theme";
 import media from "../../assets/styled/media";
 import HeaderMenu from "./header/HeaderMenu";
-import { IoIosAdd } from "react-icons/io";
 import { IoIosLogIn } from "react-icons/io";
 import { FaHeart } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
@@ -23,8 +22,7 @@ export default function Header() {
       <ul className="headerList">
         <NavLink to="/admin" className="no-underline">
           <button className="btn-primary">
-            <IoIosAdd />
-            <span>Ajouter un Produit </span>
+            <span>Admin</span>
           </button>
         </NavLink>
 
@@ -34,7 +32,7 @@ export default function Header() {
         </button>
         <button className="btn-primary">
           <IoIosLogIn />
-          Connexion
+          Log In
         </button>
       </ul>
       <i
