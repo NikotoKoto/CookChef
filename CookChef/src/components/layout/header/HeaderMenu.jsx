@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import { theme } from "../../../theme";
+import { NavLink } from "react-router-dom";
 
-export default function HeaderMenu({setPage}) {
+export default function HeaderMenu() {
   return (
     <HeaderMenuStyled>
-      <li onClick={() => setPage("admin")}>Ajouter une recette</li>
+      <li><NavLink className="no-underline" to="/admin">
+      Ajouter une recette
+        </NavLink></li>
       <li>Whislist</li>
       <li>Log in</li>
     </HeaderMenuStyled>
@@ -31,5 +34,13 @@ const HeaderMenuStyled = styled.ul`
       background-color: ${theme.colors.primary};
       color: ${theme.colors.white};
     }
+    .no-underline{
+    text-decoration:none;
+    color: ${theme.colors.primary};
+    &:hover{
+      text-decoration:none;
+      color: ${theme.colors.white};
+    }
+  }
   }
 `;

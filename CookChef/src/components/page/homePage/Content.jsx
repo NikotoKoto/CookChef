@@ -4,9 +4,8 @@ import { useState } from "react";
 import media from "../../../assets/styled/media";
 import { theme } from "../../../theme";
 import Loading from "../../layout/loading/Loading";
-import { useContext } from "react";
-import { ApiContext } from "../../../context/ApiContext";
-import { useFetchData } from "../../../hooks/useFetchData";
+import {updateRecipe as updateR, deleteRecipe as deleteR} from "../../../apis"
+import {  useFetchRecipes } from "../../../hooks/useFetchRecipe";
 import Input from "../../reusable-UI/Input";
 
 export default function Content() {
@@ -14,14 +13,16 @@ export default function Content() {
   const [filter, setFilter] = useState(""); // add feature to filter more items
   const [page, setPage] = useState(1); // add feature to render more products
 
-  const BASE_URL_API = useContext(ApiContext);
 
-  const { state, isLoading } = useFetchData(BASE_URL_API, page);
-  const { data: recipes, setData: setRecipes } = state;
-  const updateRecipe = (updatedRecipe) => {
+  const { state, isLoading } = useFetchRecipes(page);
+  const { recipe: recipes, setRecipe: setRecipes } = state;
+
+  const updateRecipe = async(updatedRecipe) => {
+    const savedRecipe = await updateR(updatedRecipe)
     setRecipes(
-      recipes.map((r) => (r._id === updatedRecipe._id ? updatedRecipe : r))
+      recipes.map((r) => (r._id === savedRecipe._id ? savedRecipe : r))
     );
+  
   };
   //Comportement
   const handleInput = (e) => {
@@ -33,9 +34,11 @@ export default function Content() {
     setPage(page + 1);
   };
 
-  const deleteRecipe = (_id) => {
-    setRecipes((prevRecipes) => prevRecipes.filter((r) => r._id !== _id));
+  const deleteRecipe = async(_id) => {
+   const deleteRecipeID=  await deleteR(_id)
+    setRecipes((prevRecipes) => prevRecipes.filter((r) => r._id !==deleteRecipeID));
   };
+
 
   //render
   return (
@@ -61,7 +64,7 @@ export default function Content() {
                 <Recipe
                   key={r._id}
                   recipe={r}
-                  toggleLikedRecipes={updateRecipe}
+                  updateRecipe={updateRecipe}
                   deleteRecipe={deleteRecipe}
                 />
               ))}

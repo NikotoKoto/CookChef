@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { getRecipe } from "../apis";
 
-// Fonction qui permet d'utiliser la data de facon global 
-export function useFetchData(url, page) {
-  const [data, setData] = useState([]); // data
+// Fonction qui permet d'utiliser la data de facon global
+export function useFetchRecipes( page) {
+  const [recipe, setRecipe] = useState([]); // data
   const [isLoading, setIsLoading] = useState(true); // add loading features
   const [error, setError] = useState([]);
+
   useEffect(() => {
     let cancel = false;
     const fetchData = async () => {
@@ -14,19 +16,16 @@ export function useFetchData(url, page) {
         const queryParam = new URLSearchParams();
         if (page) {
           // Permet de manipuler l'url
-          queryParam.append("skip", (page - 1) * 18);
           queryParam.append("limit", 18);
-          queryParam.append('sort','createdAt:-1')
+          queryParam.append("skip", (page - 1) * 18);
+          queryParam.append("sort", "createdAt:-1");
         }
+        const fetchedRecipe = await getRecipe(queryParam)
+        if(!cancel){
+          setRecipe(x => [...x, ...fetchedRecipe])
 
-        const response = await fetch(url + `?${queryParam}`);
-        if (response.ok && !cancel) {
-          const newData = await response.json();
-         
-          setData((x) =>
-            Array.isArray(newData) ? [...x, ...newData] : [...x, newData]
-          );
         }
+       
       } catch (e) {
         setError("Erreur", e);
       } finally {
@@ -37,12 +36,12 @@ export function useFetchData(url, page) {
     };
     fetchData();
     return () => (cancel = true);
-  }, [url, page]);
+  }, [page]);
 
   return {
     state: {
-      data,
-      setData,
+      recipe,
+      setRecipe,
     },
     isLoading,
     error,

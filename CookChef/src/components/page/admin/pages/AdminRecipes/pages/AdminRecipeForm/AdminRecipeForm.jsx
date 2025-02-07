@@ -1,15 +1,14 @@
-import React from "react";
 import styled from "styled-components";
-import Button from "../../../reusable-UI/Button";
-import { theme } from "../../../../theme";
+import Button from "../../../../../../reusable-UI/Button";
+import { theme } from "../../../../../../../theme";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { ApiContext } from "../../../../context/ApiContext";
+import { ApiContext } from "../../../../../../../context/ApiContext";
 import { useContext } from "react";
-import Input from "../../../reusable-UI/Input";
-export default function RecipeForm() {
+import Input from "../../../../../../reusable-UI/Input";
 
+export default function AdminRecipeForm() {
   const BASE_URL_API = useContext(ApiContext);
   const defaultValues = {
     title: "",
@@ -38,35 +37,36 @@ export default function RecipeForm() {
   } = useForm({
     defaultValues,
     resolver: yupResolver(recipeSchema),
-    mode: "onChange"
-   
   });
 
   const submit = async (values) => {
-
-    try{
+    try {
       clearErrors();
-      const response = await fetch(BASE_URL_API,
-        {
-          method: "POST",
-          headers: {
-            'Content-type' : 'application/json'
-          },
-          body: JSON.stringify(values)
-        }
-      )
-      if(response.ok) {
-        reset(defaultValues)
-      }else{
-        setError('genereic', {type: 'generic', message: 'il y a eu une erreur'})
+      const response = await fetch(BASE_URL_API, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      if (response.ok) {
+        reset(defaultValues);
+      } else {
+        setError("genereic", {
+          type: "generic",
+          message: "il y a eu une erreur",
+        });
       }
-    }catch(e){
-      setError('genereic', {type: 'generic', message: 'il y a eu une erreur'})
+    } catch (e) {
+      setError("genereic", {
+        type: "generic",
+        message: "il y a eu une erreur",
+      });
     }
   };
- 
+
   return (
-    <RecipeFormStyled>
+    <AdminRecipeFormStyled>
       <form className="contentForm" onSubmit={handleSubmit(submit)}>
         <div className="labelDiv">
           <label htmlFor="titleOfRecipe">Titre de la recette</label>
@@ -89,15 +89,17 @@ export default function RecipeForm() {
         </div>
         {errors.image && <p className="formError">{errors.image.message}</p>}
 
-        {errors.generic && <p className="formError">{errors.generic.message}</p>}
+        {errors.generic && (
+          <p className="formError">{errors.generic.message}</p>
+        )}
         <Button disabled={isSubmitting} type="submit">
           <span>Sauvegarder</span>
         </Button>
       </form>
-    </RecipeFormStyled>
+    </AdminRecipeFormStyled>
   );
 }
-const RecipeFormStyled = styled.div`
+const AdminRecipeFormStyled = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${theme.colors.white};
