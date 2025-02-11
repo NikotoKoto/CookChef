@@ -6,7 +6,7 @@ export default function HeaderMenu() {
   return (
     <HeaderMenuStyled>
       <li><NavLink className="no-underline" to="/admin">
-      Ajouter une recette
+      Admin
         </NavLink></li>
       <li>Whislist</li>
       <li>Log in</li>
