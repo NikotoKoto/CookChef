@@ -5,41 +5,43 @@ import { theme } from "../../../../theme";
 export default function AdminNav() {
   return (
     <AdminNavStyled>
-      <ul className="adminNavUl">
-        <NavLink className={} to="recipes">Recipes</NavLink>
-        <NavLink className={} to="users">Users</NavLink>
-      </ul>
+      <NavLink className={({isActive}) => isActive ? 'listLinkActive' : ''} to="recipes">
+        Recipes
+      </NavLink>
+      <NavLink className={({isActive}) => isActive ? 'listLinkActive' : ''} to="users">
+        Users
+      </NavLink>
     </AdminNavStyled>
   );
 }
 
-const AdminNavStyled = styled.div`
+const AdminNavStyled = styled.ul`
+ display: flex;
+ box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+  flex: 0 0 200px;
+  gap: 10px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  height: 50px;
+  flex-direction: column;
 
-  .adminNavUl {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 50px;
-    .adminNavUl,
+    
     a {
+      display: flex;
+      justify-content: center;
       text-decoration: none;
-      color: ${theme.colors.white};
+      color: ${theme.colors.primary};
       padding: 10px;
+      width: 100%;
       cursor: pointer;
-      border-radius: 20px;
-      background-color: ${theme.colors.primary};
-      transition: background-color 0.2s, border 0.2s, color 0.2s;
+      background-color: ${theme.colors.white};
+      
 
-      &:hover {
-        background-color: ${theme.colors.white};
-        border: 1px solid ${theme.colors.primary};
-        color: ${theme.colors.primary};
-      }
+    
     }
-  }
+
+    .listLinkActive {
+        background-color: ${theme.colors.primary};
+        border: 1px solid ${theme.colors.primary};
+        color: ${theme.colors.white};
+      }
+  
 `;

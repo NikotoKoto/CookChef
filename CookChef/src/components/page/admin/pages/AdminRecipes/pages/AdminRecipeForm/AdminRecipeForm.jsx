@@ -4,15 +4,17 @@ import { theme } from "../../../../../../../theme";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { ApiContext } from "../../../../../../../context/ApiContext";
-import { useContext } from "react";
+
 import Input from "../../../../../../reusable-UI/Input";
+import { createRecipe, updateRecipe } from "../../../../../../../apis";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 export default function AdminRecipeForm() {
-  const BASE_URL_API = useContext(ApiContext);
+  const recipe = useLoaderData();
+  const navigate = useNavigate();
   const defaultValues = {
-    title: "",
-    image: "",
+    title: recipe ? recipe.title : "",
+    image: recipe ? recipe.image : "",
   };
 
   const recipeSchema = yup.object({
@@ -42,20 +44,15 @@ export default function AdminRecipeForm() {
   const submit = async (values) => {
     try {
       clearErrors();
-      const response = await fetch(BASE_URL_API, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-      if (response.ok) {
-        reset(defaultValues);
-      } else {
-        setError("genereic", {
-          type: "generic",
-          message: "il y a eu une erreur",
+      if (recipe) {
+      await updateRecipe({
+          ...values,
+          _id: recipe._id,
         });
+        navigate('/admin/recipes/list')
+      } else {
+        await createRecipe(values);
+        reset(defaultValues);
       }
     } catch (e) {
       setError("genereic", {
