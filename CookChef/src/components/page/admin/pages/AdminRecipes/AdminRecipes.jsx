@@ -36,6 +36,8 @@ const AdminRecipesStyled = styled.div`
   }
   .containerOutlet {
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex: 1 1 auto;
     flex-direction: column;
   }

@@ -1,24 +1,35 @@
-import React from "react";
 import styled from "styled-components";
-import Button from "../../../../../../reusable-UI/Button"
 import { useFetchRecipes } from "../../../../../../../hooks/useFetchRecipe";
 import { theme } from "../../../../../../../theme";
+import { deleteRecipe as deleteR } from "../../../../../../../apis";
+import { NavLink } from "react-router-dom";
 export default function AdminRecipesList() {
   // state
+  
   const { state } = useFetchRecipes();
-  const { recipe: recipes } = state;
+  const { recipe: recipes,
+    setRecipe: setRecipes
+   } = state;
 
   // Comportement
+  const deleteRecipe = async(_id) => {
+    await deleteR(_id);
+    setRecipes(recipes.filter((r) => r._id !== _id))
+  }
+
+
   return (
     <AdminRecipesListStyled>
       {recipes.length
-        ? recipes.map((recipe) => <li key={recipe._id}><span className="span-container">{recipe.title}</span>
+        ?( recipes.map((recipe) => <li key={recipe._id}><span className="span-container">{recipe.title}</span>
         
-          <Button className="btn-edit"><span>Editer</span></Button>
-          <Button className="btn-danger"><span>Supprimer</span></Button>
+          <NavLink to={`../edit/${recipe._id}`}>
+          <button className="btn-edit">Editer</button>
+          </NavLink>
+          <button  onClick={() => deleteRecipe(recipe._id)} className="btn-danger">Supprimer</button>
 
-     </li>)
-        : null}
+     </li>))
+        :( <p> Pas de recette disponible</p>)}
     </AdminRecipesListStyled>
   );
 }
@@ -43,22 +54,27 @@ const AdminRecipesListStyled = styled.div`
     flex: 1 1 auto
   }
 
-  .btn-danger{
-    background-color: red;
+  .btn-danger, .btn-edit{
+  
+    padding: 10px ;
     border: 2px solid transparent;
     border-radius: 3px;
     margin-left: 20px;
+    color: ${theme.colors.white};
+    cursor: pointer;
   }
   .btn-edit{
     background-color: green;
-    border: 2px solid transparent;
-    border-radius: 3px;
-
+  }
+  .btn-danger{
+    background-color: red;
   }
 
   .btn-danger:hover, .btn-edit:hover{
       border: 2px solid white;
+      
       color: white;
      
     }
+    
 `;

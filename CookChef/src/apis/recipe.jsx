@@ -23,6 +23,7 @@ export async function deleteRecipe(_id) {
   const response = await fetch(`${RECIPE_API}/${_id}`, {
     method: "DELETE",
   });
+  console.log("ici: ",response)
   if (response.ok) {
     return _id;
   } else {
@@ -32,7 +33,7 @@ export async function deleteRecipe(_id) {
 
 export async function updateRecipe(updatedRecipe) {
   const { _id, ...restRecipe } = updatedRecipe;
-  const response = await fetch(`${RECIPE_API}/${updatedRecipe._id}`, {
+  const response = await fetch(`${RECIPE_API}/${_id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
